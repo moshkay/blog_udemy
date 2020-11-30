@@ -1,0 +1,171 @@
+
+{% load static %}
+<!DOCTYPE html>
+<!--[if IE 9]>         <html class="no-js lt-ie10" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+
+        <title>ProUI - Responsive Bootstrap Admin Template</title>
+
+        <meta name="description" content="ProUI is a Responsive Bootstrap Admin Template created by pixelcave and published on Themeforest.">
+        <meta name="author" content="pixelcave">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+
+        <!-- Icons -->
+        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+        <link rel="shortcut icon" href="img/favicon.png">
+        <link rel="apple-touch-icon" href="img/icon57.png" sizes="57x57">
+        <link rel="apple-touch-icon" href="img/icon72.png" sizes="72x72">
+        <link rel="apple-touch-icon" href="img/icon76.png" sizes="76x76">
+        <link rel="apple-touch-icon" href="img/icon114.png" sizes="114x114">
+        <link rel="apple-touch-icon" href="img/icon120.png" sizes="120x120">
+        <link rel="apple-touch-icon" href="img/icon144.png" sizes="144x144">
+        <link rel="apple-touch-icon" href="img/icon152.png" sizes="152x152">
+        <link rel="apple-touch-icon" href="img/icon180.png" sizes="180x180">
+        <!-- END Icons -->
+
+        <!-- Stylesheets -->
+        <!-- Bootstrap is included in its original form, unaltered -->
+        <link rel="stylesheet" href="{% static 'css1/bootstrap.min.css' %}">
+
+        <!-- Related styles of various icon packs and plugins -->
+        <link rel="stylesheet" href="{% static 'css1/plugins.css' %}">
+
+        <!-- The main stylesheet of this template. All Bootstrap overwrites are defined in here -->
+        <link rel="stylesheet" href="{% static 'css1/main.css' %}">
+
+        <!-- Include a specific file here from css/themes/ folder to alter the default theme of the template -->
+
+        <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
+        <link rel="stylesheet" href="{% static 'css1/themes.css' %}">
+        <!-- END Stylesheets -->
+
+        <!-- Modernizr (browser feature detection library) -->
+        <script src="{% static 'js1/vendor/modernizr.min.js' %}"></script>
+		 <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}">
+		 
+		 
+		 
+		 
+		 </script>
+    </head>
+<body>
+   <!-- Datatables Header -->
+   <div class="content-header">
+    <div class="header-section">
+        <h1>
+            <i class="fa fa-table"></i>Emails List<br><small>you can add, edit and delete your data!</small>
+        </h1>
+    </div>
+</div>
+   <div class="block">
+                                    <!-- Quick Post Title -->
+                                    <div class="block-title">
+                                        <div class="block-options pull-right">
+                                            <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="tooltip" title="Post Options"><i class="fa fa-pencil"></i></a>
+                                        </div>
+                                        <h2><strong>Quick</strong> Post</h2>
+                                    </div>
+                                    <!-- END Quick Post Title -->
+
+                                    <!-- Quick Post Content -->
+                                    <form action="" method="post" class="form-bordered">{% csrf_token %}
+                                       
+                                        <div class="form-group">
+                                            <textarea id="editor1" name="content" rows="11" class="form-control ckeditor" placeholder="Enter content.."></textarea>
+                                        </div>
+										
+										<script >
+										
+											CKEDITOR.replace('editor1');
+										
+										</script>
+                                        <div class="form-group form-actions">
+                                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Publish</button>
+                                            
+                                        </div>
+                                    </form>
+                                    <!-- END Quick Post Content -->
+                                </div>
+
+<ul class="breadcrumb breadcrumb-top">
+    <li>Emails</li>
+    <li><a href="/panel/newsletter/emails/">List</a></li>
+</ul>
+<!-- END Datatables Header -->
+
+
+
+  <!-- Datatables Content -->
+  <div class="block full">
+    <div class="block-title">
+        <h2><strong>Emails</strong> List</h2>
+    </div>
+   
+    <div class="table-responsive">
+        <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    
+                    <th>Email</th>
+                 
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+          {% for emails in query %}
+                <tr>
+                    <td class="text-center">{{emails.pk}}</td>
+                    <td>{{emails.email}}</td>
+                   
+                   
+                    <td class="text-center">
+                        <div class="btn-group">
+                            
+                            
+                            <a href="" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"> Delete</i></a>
+                          
+                        </div>
+                    </td>
+                </tr>
+
+                {% endfor %}
+             
+               
+            
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- END Datatables Content -->
+
+
+
+
+		<script src="{% static 'js1/vendor/jquery.min.js' %}"></script>
+        <script src="{% static 'js1/vendor/bootstrap.min.js'%}"></script>
+        <script src="{% static 'js1/plugins.js' %}"></script>
+        <script src="{% static 'js1/app.js' %}"></script>
+
+        <!-- Google Maps API Key (you will have to obtain a Google Maps API key to use Google Maps) -->
+        <!-- For more info please have a look at https://developers.google.com/maps/documentation/javascript/get-api-key#key -->
+        <script src="https://maps.googleapis.com/maps/api/js?key="></script>
+        <script src="js/helpers/gmaps.min.js"></script>
+
+        <!-- Load and execute javascript code used only in this page -->
+        <script src="js/pages/index.js"></script>
+        <script>$(function(){ Index.init(); });</script>
+		 <script src="back/js/pages/tablesDatatables.js"></script>
+   <script>$(function(){ TablesDatatables.init(); });</script>
+    </body>
+</html>
+
+
+
+   <!-- Load and execute javascript code used only in this page -->
+  
+   

@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -27,6 +29,10 @@ class Post(models.Model):
     likes = models.IntegerField(default=0)
     featured = models.BooleanField(default='False')
     live = models.BooleanField(default='False')
+    views = models.IntegerField(default=0)
+    audio = models.FileField(upload_to='pics', null=True,blank=True )
+    video = models.FileField(upload_to='pics', null=True, blank=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return self.title
@@ -39,11 +45,21 @@ class PostFeed(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE,null=True,blank=True)
-    reply = models.ForeignKey('self', null=True, related_name='replies', on_delete=models.CASCADE)
+    reply = models.ForeignKey('self', null=True, related_name='replies', on_delete=models.CASCADE, blank=True)
     opinion = models.TextField()
     date_created = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
 
 class Like(models.Model):
     likes = models.IntegerField()
     post = models.ForeignKey(Post,on_delete=models.CASCADE,null=True,blank=True)
     user_id = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+
+
+
+class Newsletter(models.Model):
+
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.email

@@ -167,9 +167,26 @@
                    <!-- <a href="#">like</a>-->
                         <button type="submit">{{likes}} like</button> 
                     <a href="#">reply</a>
+                    <a href="#">{{post.views}} views</a>
                     </form>
                     
                 </div><!-- .reply -->
+
+               <div class="container">
+                  <audio controls> 
+
+                    <source src="{{post.audio.url}}" type="video/mp4">
+                  </audio>
+
+               </div>
+
+               <div class="container">
+                <video controls width="400"> 
+
+                  <source src="{{post.video.url}}" type="audio/mp3">
+                </video>
+
+             </div>
                
 
                 <div class="tags-links mt-4">
