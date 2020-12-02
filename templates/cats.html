@@ -86,7 +86,75 @@
             <div class="axil-slide slider-style-1">
                 <div class="container">
                     <div class="row">
-                        
+                        <div class="col-lg-12">
+                            <div class="slider-activation axil-slick-arrow">
+                                <!-- Start Single Slide  -->
+                                {% for i in category %}
+                                <div class="content-block">
+                                    <!-- Start Post Thumbnail  -->
+                                   
+                                    <div class="post-thumbnail">
+                                        <a href="">
+                                            <img src="{{i.image.url}}" alt="Post Images">
+                                        </a>
+                                    </div>
+                                    <!-- End Post Thumbnail  -->
+
+                                    <!-- Start Post Content  -->
+                                    <div class="post-content">
+                                        <div class="post-cat">
+                                            <div class="post-cat-list">
+                                                <a class="hover-flip-item-wrapper" href="#">
+                                                    <span >
+                                                        <span style="color: red;">{{p.category.name}}</span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <h2 class="title"><a href="">{{i.name}}</a></h2>
+                                        <!-- Post Meta  -->
+                                        <div class="post-meta-wrapper with-button">
+                                            <div class="post-meta">
+                                               
+                                                <div class="content">
+                                                    <h6 class="post-author-name">
+                                                        <a class="hover-flip-item-wrapper" href="author.html">
+                                                            <span >
+                                                                <span style="color: aliceblue;">{{p.user}}</span>
+                                                            </span>
+                                                        </a>
+                                                    </h6>
+                                                    <ul class="post-meta-list">
+                                                        <li>{{i.date_created}}</li>
+                                                        <li>{{p.views}} views</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <ul class="social-share-transparent justify-content-end">
+                                                <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+                                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                                
+                                                
+                                            </ul>
+                                           
+                                        </div>
+                                    </div>
+                                    <!-- End Post Content  -->
+                                </div>
+                                {% endfor %}
+
+                              
+                            
+
+                               
+                                <!-- End Single Slide  -->
+
+                               
+                                </div>
+                                
+                               
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,11 +174,11 @@
                             </div>
                         </div>
                         <!-- Start Post List  -->
-                        {% for post in result %}
+                        {% for item in post %}
                         <div class="content-block post-list-view axil-control is-active mt--30">
                             <div class="post-thumbnail">
-                                <a href="{% url 'detail' post.id %}">
-                                    <img src="{{post.image.url}}" alt="Post Images">
+                                <a href="{% url 'detail' item.id %}">
+                                    <img src="{{item.image.url}}" alt="Post Images">
                                 </a>
                             </div>
                             <div class="post-content">
@@ -118,12 +186,12 @@
                                     <div class="post-cat-list">
                                         <a class="hover-flip-item-wrapper" href="#">
                                             <span class="">
-                                                <span data-text="{{post.category.name}}">{{post.category.name}}</span>
+                                                <span data-text="{{item.category.name}}">{{item.category.name}}</span>
                                             </span>
                                         </a>
                                     </div>
                                 </div>
-                                <h4 class="title"><a href="{% url 'detail' post.id %}">{{post.title}}</a></h4>
+                                <h4 class="title"><a href="{% url 'detail' item.id %}">{{item.title}}</a></h4>
                                 <div class="post-meta-wrapper">
                                     <div class="post-meta">
                                         <div class="content">
@@ -209,7 +277,7 @@
                             <!-- Start Single Widget  -->
                             <div class="axil-single-widget widget widget_search mb--30">
                                 <h5 class="widget-title">Search</h5>
-                                <form action="">
+                                <form action="/search">
                                     <div class="axil-search form-group">
                                         <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
                                         <input type="text" name="q" class="form-control" placeholder="Search">

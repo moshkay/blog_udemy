@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to = 'pics', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     
@@ -21,7 +22,7 @@ class Post(models.Model):
     title = models.CharField(max_length = 200)
     content = RichTextUploadingField(null=True, blank=True)
     content2 = RichTextUploadingField(null=True, blank=True)
-    image = models.ImageField(upload_to = 'pics',null = True, blank=True)
+    image = models.ImageField(upload_to = 'pics',null = True)
     date_created = models.DateTimeField(auto_now=True)
     date_updated = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,null=True,blank=True)

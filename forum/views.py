@@ -16,6 +16,7 @@ from django.utils.html import strip_tags
 
 
 
+
 def sendMail(content):
   
     query = Newsletter.objects.all()
@@ -75,13 +76,16 @@ def emails(request):
 def index(request):
     info = Post.objects.order_by('-id')
     featured = Post.objects.filter(featured = True).order_by('-id')
+    first = featured[0]
     feat = Post.objects.filter(featured = True).count()
     print(feat)
+    print(first)
 
     context = {
         'info':info,
         'featured':featured,
-        'feat':feat
+        'feat':feat,
+        'first':first
     }
 
     return render(request,'home.html', context)
@@ -225,17 +229,19 @@ def logout(request):
 
 def search(request):
 
-    cat = Category.objects.all()
+    
     query = request.GET.get('q')
-    select = request.GET.get('category')
+    
 
-    if query and select:
+    if query:
 
-        result = Post.objects.filter(Q(title__icontains=query)|Q(content__icontains = query)).filter(category=select)
+
+        result = Post.objects.filter(Q(title__icontains=query)|Q(content__icontains = query))
+
         context = {
-        'result':result,
-        'cat':cat
 
+            'result':result,
+        
         }
 
         return render(request, 'search.html', context)
@@ -277,4 +283,22 @@ def logout(request):
     auth.logout(request)
     return redirect('sign')
 
+
+def category(request, id):
+    cat = get_object_or_404(Category, pk=id)
+    post = Post.objects.all().filter(category=cat)
     
+    category = Category.objects.filter(id=id)
+    for i in category:
+
+        print(i.name, i.image)
+    context = {
+
+        'category':category,
+        'post': post,
+        
+        }
+
+    
+
+    return render(request, 'cats.html', context)

@@ -92,7 +92,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-               
+                'forum.context_processors.cat_list',
                 
             ],
         },
@@ -203,3 +203,6 @@ EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'emma2fame@gmail.com'
 EMAIL_HOST_PASSWORD = 'manueldavis007'
 EMAIL_USE_TLS = True
+EMAIL = 'emma2fame@gmail.com'
+PASSWORD = 'manueldavis007'
+TEST_EMAIL = ['tojurnanna@gmail.com']
