@@ -76,19 +76,32 @@ def emails(request):
 def index(request):
     info = Post.objects.order_by('-id')
     featured = Post.objects.filter(featured = True).order_by('-id')
-    first = featured[0]
-    feat = Post.objects.filter(featured = True).count()
-    print(feat)
-    print(first)
+    print(featured.count())
+    if featured.count() >0:
 
-    context = {
+        first = featured[0]
+        feat = Post.objects.filter(featured = True).count()
+        print(feat)
+        print(first)
+
+        context = {
         'info':info,
         'featured':featured,
         'feat':feat,
         'first':first
-    }
+        }
 
-    return render(request,'home.html', context)
+        return render(request,'home.html', context)
+    else:
+
+        context = {
+        'info':info,
+        #'featured':featured,
+        #'feat':feat,
+        #'first':first
+        }
+
+        return render(request,'home.html',context)
 
 def sub(request):
 
@@ -302,3 +315,16 @@ def category(request, id):
     
 
     return render(request, 'cats.html', context)
+
+def about(request):
+
+    return render(request, 'about_us.html')
+
+
+def contact(request):
+
+    if request.method == 'POST':
+
+        return redirect('/')
+
+    return render(request, 'contact_us.html')

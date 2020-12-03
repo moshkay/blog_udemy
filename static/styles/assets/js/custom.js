@@ -33,7 +33,7 @@ $(document).ready(function(){
 
         $.post('/contact',
             {
-                client_name: $('#name').val(),
+               // client_name: $('#name').val(),
                 email:$('#email').val(),
                 message:$('#message').val(),
                 csrfmiddlewaretoken:CSRFTOKEN
