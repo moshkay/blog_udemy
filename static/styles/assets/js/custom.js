@@ -31,9 +31,11 @@ $(document).ready(function(){
         var l = Ladda.create(document.querySelector('#contact_submit'));
         l.start();
 
+       
+
         $.post('/contact',
             {
-               // client_name: $('#name').val(),
+              
                 email:$('#email').val(),
                 message:$('#message').val(),
                 csrfmiddlewaretoken:CSRFTOKEN
@@ -43,14 +45,14 @@ $(document).ready(function(){
             
             if (data.data == 100){
                 swal('success',data.alert,'success')
-                $('#name').val("");
+            
                 $('#email').val('');
                 $('#message').val('')
                 
                 l.stop();
-                // window.location.reload();
+                window.location.reload();
             }else{
-                swal("Error!",data.alert,'error')
+                swal("Error!",data.alert,'error');
                 l.stop();
                 console.log('an error occured');
             }
@@ -64,10 +66,10 @@ $(document).ready(function(){
     $('#subscribe').on('click',function(){
 
        
-       // var l = Ladda.create(document.querySelector('#subscribe_submit'));
-       // l.start();
+        var l = Ladda.create(document.querySelector('#subscribe'));
+        l.start();
 
-        $.post('/subscribe',
+        $.post('/sub',
             {
                
                 email:$('#email').val(),
@@ -78,32 +80,36 @@ $(document).ready(function(){
         .done(function(data){
             
             if (data.data == 100){
-                //swal('success',data.alert,'success')
-                // $('#name').val("");
+                swal('success',data.alert,'success')
+                
                 $('#email').val('');
                 
                 
-                //l.stop();
+                l.stop();
                  window.location.reload();
             }else{
-               // swal("Error!",data.alert,'error')
-                //l.stop();
+                swal("Error!",data.alert,'error')
+                l.stop();
                 console.log('an error occured');
             }
 
         })
         .fail(function(){
-
+            alert('failed')
         })
     })
 
     $('#comment_submit').on('click',function(){
+        var l = Ladda.create(document.querySelector('#comment_submit'));
+        l.start();
         
 
         $.post('/detail/'+$("#post_id").val()+"/",
+
+       
             {
                 
-                opinion:$('#comment').val(),
+                opinion:$('#opinion').val(),
       
                 csrfmiddlewaretoken:CSRFTOKEN
             }
@@ -111,14 +117,14 @@ $(document).ready(function(){
         .done(function(data){
             
             if (data.data == 100){
-                //swal('success',data.alert,'success')
+                swal('success',data.alert,'success')
                 alert('success')
                 
                 l.stop();
-                window.location.reload();
+               window.location.reload();
             }else{
-                alert('Error')
-               
+                
+                l.stop();
                 console.log('an error occured');
             }
 
