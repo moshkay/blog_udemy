@@ -101,7 +101,7 @@
 
                             <div class="social-share-block">
                                 <div class="post-like">
-                                    <input type="hidden" id="post_id" value="{{post.id}}">
+                                    
                                     <a href="#"><i class="fal fa-thumbs-up"></i><span>{{likes}} Like</span></a>
                                 </div>
                                 <ul class="social-icon icon-rounded-transparent md-size">
@@ -141,13 +141,14 @@
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label>Leave a Comment</label>
-                                                    <textarea name="opinion" id="comment" required></textarea>
+                                                    <textarea name="opinion" id="opinion"></textarea>
+                                                   <input type="hidden" id="post_id" value="{{post.id}}">
                                                 </div>
                                             </div>
                                            
                                             <div class="col-lg-12">
-                                                <div class="form-submit cerchio">
-                                                    <button id="comment_submit" class="axil-button button-rounded">Submit</button>
+                                                <div class="form-submit">
+                                                    <button id="comment_submit" class="axil-button button-rounded ladda-button" data-style="slide-up">Submit</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,7 +170,7 @@
                                                     <div class="comment-inner">
                                                         <h6 class="commenter">
                                                             <a class="hover-flip-item-wrapper" href="#">
-                                                                <span >
+                                                                <span>
                                                                     <span style="color:aqua">By {{opinion.user.username}}</span>
                                                                 </span>
                                                             </a>
@@ -272,73 +273,61 @@
 
                             <!-- Start Single Widget  -->
                             <div class="axil-single-widget widget widget_postlist mb--30">
-                                <h5 class="widget-title">Popular on Blogar</h5>
+                                <h5 class="widget-title">Featured Posts</h5>
                                 <!-- Start Post List  -->
                                 <div class="post-medium-block">
-
+                                    {% for feats in featured %}
                                     <!-- Start Single Post  -->
                                     <div class="content-block post-medium mb--20">
                                         <div class="post-thumbnail">
-                                            <a href="post-details.html">
-                                                <img src="assets/images/small-images/blog-sm-01.jpg" alt="Post Images">
+                                            <a href="{% url 'detail' feats.id %}">
+                                                <img src="{{feats.image.url}}" alt="Post Images">
                                             </a>
                                         </div>
                                         <div class="post-content">
-                                            <h6 class="title"><a href="post-details.html">The underrated design book that transformed the way I
-                                                    work </a></h6>
+                                            <h6 class="title"><a href="{% url 'detail' feats.id %}">{{feats.title}} I
+                                                    </a></h6>
                                             <div class="post-meta">
                                                 <ul class="post-meta-list">
-                                                    <li>Feb 17, 2019</li>
-                                                    <li>300k Views</li>
+                                                    <li>{{feats.date_created}}</li>
+                                                    <li>{{feats.views}} Views</li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- End Single Post  -->
-
-                                    <!-- Start Single Post  -->
-                                    <div class="content-block post-medium mb--20">
-                                        <div class="post-thumbnail">
-                                            <a href="post-details.html">
-                                                <img src="assets/images/small-images/blog-sm-02.jpg" alt="Post Images">
-                                            </a>
-                                        </div>
-                                        <div class="post-content">
-                                            <h6 class="title"><a href="post-details.html">Here’s what you should (and shouldn’t) do when</a>
-                                            </h6>
-                                            <div class="post-meta">
-                                                <ul class="post-meta-list">
-                                                    <li>Feb 17, 2019</li>
-                                                    <li>300k Views</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Post  -->
-
-                                    <!-- Start Single Post  -->
-                                    <div class="content-block post-medium">
-                                        <div class="post-thumbnail">
-                                            <a href="post-details.html">
-                                                <img src="assets/images/small-images/blog-sm-03.jpg" alt="Post Images">
-                                            </a>
-                                        </div>
-                                        <div class="post-content">
-                                            <h6 class="title"><a href="post-details.html">How a developer and designer duo at Deutsche Bank keep
-                                                    remote</a></h6>
-                                            <div class="post-meta">
-                                                <ul class="post-meta-list">
-                                                    <li>Feb 17, 2019</li>
-                                                    <li>300k Views</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Post  -->
+                                    {% endfor %}
 
                                 </div>
                                 <!-- End Post List  -->
 
+                            </div>
+
+                            <div class="axil-single-widget widget widget_postlist mb--30">
+                                <h5 class="widget-title">Recent Posts</h5>
+                                <!-- Start Post List  -->
+                                <div class="post-medium-block">
+
+                                    {% for new in recent %}
+                                    <!-- Start Single Post  -->
+                                    <div class="content-block post-medium mb--20">
+                                        <div class="post-content">
+                                            <h6 class="title"><a href="post-details.html">{{new.title}}
+                                                </a></h6>
+                                            <div class="post-meta">
+                                                <ul class="post-meta-list">
+                                                    <li>{{new.date_created}}</li>
+                                                    <li>{{new.views}} Views</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Single Post  -->
+                                    {% endfor %}
+
+                                   
+                                </div>
+                                <!-- End Post List  -->
                             </div>
                             <!-- End Single Widget  -->
 
@@ -348,30 +337,24 @@
                                 <div class="newsletter-inner text-center">
                                     <h4 class="title mb--15">Never Miss A Post!</h4>
                                     <p class="b2 mb--30">Sign up for free and be the first to <br /> get notified about updates.</p>
-                                        <form action="/sub" method="POST">{% csrf_token %}
+                                        <form>{% csrf_token %}
                                             <div class="form-group">
-                                                <input placeholder="Enter Your Email" name="email" type="email">
+                                                <input placeholder="Enter Your Email" id="email" name="email" type="email">
                                             </div>
                                             <div class="form-submit">
-                                                <button type="submit" class="cerchio axil-button button-rounded ladda-button" data-style="slide-up"><span>Subscribe</span></button>
+                                                <button id="subscribe" class="axil-button button-rounded btn-primary ladda-button" data-style="slide-up"><span>Subscribe</span></button>
                                             </div>
                                         </form>
                                 </div>
                                 <!-- End Post List  -->
                             </div>
-                            <!-- End Single Widget  -->
+                            <script>
+                                var CSRFTOKEN = "{{csrf_token}}"
+                              </script>         <!-- End Single Widget  -->
 
-                            <!-- Start Single Widget  -->
-                            <div class="axil-single-widget widget widget_ads mb--30">
-                                <!-- Start Post List  -->
-                                <div class="thumbnail">
-                                    <a href="#">
-                                        <img src="assets/images/post-single/ads-01.jpg" alt="Ads Images">
-                                    </a>
-                                </div>
-                                <!-- End Post List  -->
-                            </div>
-                            <!-- End Single Widget  -->
+                            <!-- Start ads Widget  -->
+                           
+                            <!-- End ads Widget  -->
 
                             <!-- Start Single Widget  -->
                             <div class="axil-single-widget widget widget_social mb--30">
@@ -388,215 +371,13 @@
                             </div>
                             <!-- End Single Widget  -->
 
-                            <!-- Start Single Widget  -->
-                            <div class="axil-single-widget widget widget_instagram mb--30">
-                                <h5 class="widget-title">Instagram</h5>
-                                <!-- Start Post List  -->
-                                <ul class="instagram-post-list-wrapper">
-                                    <li class="instagram-post-list">
-                                        <a href="#">
-                                            <img src="assets/images/small-images/instagram-01.jpg" alt="Instagram Images">
-                                        </a>
-                                    </li>
-                                    <li class="instagram-post-list">
-                                        <a href="#">
-                                            <img src="assets/images/small-images/instagram-02.jpg" alt="Instagram Images">
-                                        </a>
-                                    </li>
-                                    <li class="instagram-post-list">
-                                        <a href="#">
-                                            <img src="assets/images/small-images/instagram-03.jpg" alt="Instagram Images">
-                                        </a>
-                                    </li>
-                                    <li class="instagram-post-list">
-                                        <a href="#">
-                                            <img src="assets/images/small-images/instagram-04.jpg" alt="Instagram Images">
-                                        </a>
-                                    </li>
-                                    <li class="instagram-post-list">
-                                        <a href="#">
-                                            <img src="assets/images/small-images/instagram-05.jpg" alt="Instagram Images">
-                                        </a>
-                                    </li>
-                                    <li class="instagram-post-list">
-                                        <a href="#">
-                                            <img src="assets/images/small-images/instagram-06.jpg" alt="Instagram Images">
-                                        </a>
-                                    </li>
-                                </ul>
-                                <!-- End Post List  -->
-                            </div>
-                            <!-- End Single Widget  -->
+                            
 
                             <!-- Start Single Widget  -->
-                            <div class="axil-single-widget widget widget_archive mb--30">
-                                <h5 class="widget-title">Archives</h5>
-                                <!-- Start Post List  -->
-                                <ul>
-                                    <li><a href="#">January 2020</a></li>
-                                    <li><a href="#">February 2020</a></li>
-                                    <li><a href="#">March 2020</a></li>
-                                    <li><a href="#">April 2020</a></li>
-                                </ul>
-                                <!-- End Post List  -->
-                            </div>
+                            
                             <!-- End Single Widget  -->
 
-
-                            <!-- Start Single Widget  -->
-                            <div class="axil-single-widget widget widget_video mb--30">
-                                <h5 class="widget-title">Featured Videos</h5>
-                                <!-- Start Post List  -->
-                                <div class="video-post-wrapepr">
-
-                                    <!-- Start Post List  -->
-                                    <div class="content-block image-rounded">
-                                        <div class="post-content">
-                                            <div class="post-thumbnail">
-                                                <a href="post-details.html">
-                                                    <img src="assets/images/post-single/post-md-01.jpg" alt="Post Images">
-                                                </a>
-                                                <a class="video-popup size-medium icon-color-secondary position-top-center" href="post-details.html"><span class="play-icon"></span></a>
-                                            </div>
-                                            <h6 class="title mt--10"><a href="post-details.html">I built my own camera with a Raspberry Pi 4</a>
-                                            </h6>
-                                        </div>
-
-                                    </div>
-                                    <!-- End Post List  -->
-
-                                    <!-- Start Post List  -->
-                                    <div class="content-block image-rounded mt--20">
-                                        <div class="post-content">
-                                            <div class="post-thumbnail">
-                                                <a href="post-details.html">
-                                                    <img src="assets/images/post-single/post-md-02.jpg" alt="Post Images">
-                                                </a>
-                                                <a class="video-popup size-medium icon-color-secondary position-top-center" href="post-details.html"><span class="play-icon"></span></a>
-                                            </div>
-                                            <h6 class="title mt--10"><a href="post-details.html">A rocket launch can’t unite us until the space
-                                                    world acknowledges our divisions</a></h6>
-                                        </div>
-
-                                    </div>
-                                    <!-- End Post List  -->
-
-                                    <!-- Start Post List  -->
-                                    <div class="content-block image-rounded mt--20">
-                                        <div class="post-content">
-                                            <div class="post-thumbnail">
-                                                <a href="post-details.html">
-                                                    <img src="assets/images/post-single/post-md-03.jpg" alt="Post Images">
-                                                </a>
-                                                <a class="video-popup size-medium icon-color-secondary position-top-center" href="post-details.html"><span class="play-icon"></span></a>
-                                            </div>
-                                            <h6 class="title mt--10"><a href="post-details.html"> With iOS 14, Apple is finally letting the
-                                                    iPhone home screen get complicated</a></h6>
-                                        </div>
-                                    </div>
-                                    <!-- End Post List  -->
-
-                                </div>
-                                <!-- End Post List  -->
-                            </div>
-                            <!-- End Single Widget  -->
-
-
-                            <!-- Start Single Widget  -->
-                            <div class="axil-single-widget widget widget_tag_cloud mb--30">
-                                <h5 class="widget-title">Archives</h5>
-                                <!-- Start Post List  -->
-                                <div class="tagcloud">
-                                    <a href="#">Design</a>
-                                    <a href="#">Development</a>
-                                    <a href="#">Graphic</a>
-                                    <a href="#">UI/UX Design</a>
-                                    <a href="#">HTML</a>
-                                </div>
-                                <!-- End Post List  -->
-                            </div>
-                            <!-- End Single Widget  -->
-
-
-                            <!-- Start Single Widget  -->
-                            <div class="axil-single-widget widget widget_dropdown mb--30">
-                                <h5 class="widget-title">Archives</h5>
-                                <!-- Start Post List  -->
-                                <form action="#">
-                                    <select>
-                                        <option>Select Month</option>
-                                        <option>April 2020 (4)</option>
-                                        <option>March 2020 (3)</option>
-                                        <option>November 2018 (11)</option>
-                                        <option>January 2013 (5)</option>
-                                    </select>
-                                </form>
-                                <!-- End Post List  -->
-                            </div>
-                            <!-- End Single Widget  -->
-
-                            <!-- Start Single Widget  -->
-                            <div class="axil-single-widget widget widget_postlist mb--30">
-                                <h5 class="widget-title">Recent Post</h5>
-                                <!-- Start Post List  -->
-                                <div class="post-medium-block">
-
-                                    <!-- Start Single Post  -->
-                                    <div class="content-block post-medium mb--20">
-                                        <div class="post-content">
-                                            <h6 class="title"><a href="post-details.html">The underrated design book that transformed the way I
-                                                    work </a></h6>
-                                            <div class="post-meta">
-                                                <ul class="post-meta-list">
-                                                    <li>Feb 17, 2019</li>
-                                                    <li>300k Views</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Post  -->
-
-                                    <!-- Start Single Post  -->
-                                    <div class="content-block post-medium mb--20">
-                                        <div class="post-content">
-                                            <h6 class="title"><a href="post-details.html">Here’s what you should (and shouldn’t) do when</a>
-                                            </h6>
-                                            <div class="post-meta">
-                                                <ul class="post-meta-list">
-                                                    <li>Feb 17, 2019</li>
-                                                    <li>300k Views</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Post  -->
-
-                                    <!-- Start Single Post  -->
-                                    <div class="content-block post-medium">
-                                        <div class="post-content">
-                                            <h6 class="title"><a href="post-details.html">How a developer and designer duo at Deutsche Bank keep
-                                                    remote</a></h6>
-                                            <div class="post-meta">
-                                                <ul class="post-meta-list">
-                                                    <li>Feb 17, 2019</li>
-                                                    <li>300k Views</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Post  -->
-                                </div>
-                                <!-- End Post List  -->
-                            </div>
-                            <!-- End Single Widget  -->
-
-                            <div class="axil-banner">
-                                <div class="thumbnail">
-                                    <a href="#">
-                                        <img class="w-100" src="assets/images/add-banner/banner-02.png" alt="Banner Images">
-                                    </a>
-                                </div>
-                            </div>
+                           
 
 
 
@@ -608,168 +389,10 @@
         </div>
         <!-- End Post Single Wrapper  -->
 
-        <!-- Start More Stories Area  -->
-        <div class="axil-more-stories-area axil-section-gap bg-color-grey">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title">
-                            <h2 class="title">More Stories</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-
-                    <!-- Start Stories Post  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <!-- Start Post List  -->
-                        <div class="post-stories content-block mt--30">
-                            <div class="post-thumbnail">
-                                <a href="post-details.html">
-                                    <img src="assets/images/post-single/stories-01.jpg" alt="Post Images">
-                                </a>
-                            </div>
-                            <div class="post-content">
-                                <div class="post-cat">
-                                    <div class="post-cat-list">
-                                        <a href="#">LEADERSHIP</a>
-                                    </div>
-                                </div>
-                                <h5 class="title"><a href="post-details.html">Microsoft and Bridgestone launch real-time
-                                        tire</a></h5>
-                            </div>
-                        </div>
-                        <!-- End Post List  -->
-                    </div>
-                    <!-- Start Stories Post  -->
-
-                    <!-- Start Stories Post  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <!-- Start Post List  -->
-                        <div class="post-stories content-block mt--30">
-                            <div class="post-thumbnail">
-                                <a href="post-details.html">
-                                    <img src="assets/images/post-single/stories-02.jpg" alt="Post Images">
-                                </a>
-                            </div>
-                            <div class="post-content">
-                                <div class="post-cat">
-                                    <div class="post-cat-list">
-                                        <a href="#">DESIGN</a>
-                                    </div>
-                                </div>
-                                <h5 class="title"><a href="post-details.html">Microsoft and Bridgestone launch real-time
-                                        tire</a></h5>
-                            </div>
-                        </div>
-                        <!-- End Post List  -->
-                    </div>
-                    <!-- Start Stories Post  -->
-
-                    <!-- Start Stories Post  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <!-- Start Post List  -->
-                        <div class="post-stories content-block mt--30">
-                            <div class="post-thumbnail">
-                                <a href="post-details.html">
-                                    <img src="assets/images/post-single/stories-03.jpg" alt="Post Images">
-                                </a>
-                            </div>
-                            <div class="post-content">
-                                <div class="post-cat">
-                                    <div class="post-cat-list">
-                                        <a href="#">PRODUCT UPDATES</a>
-                                    </div>
-                                </div>
-                                <h5 class="title"><a href="post-details.html">Microsoft and Bridgestone launch real-time
-                                        tire</a></h5>
-                            </div>
-                        </div>
-                        <!-- End Post List  -->
-                    </div>
-                    <!-- Start Stories Post  -->
-
-                    <!-- Start Stories Post  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <!-- Start Post List  -->
-                        <div class="post-stories content-block mt--30">
-                            <div class="post-thumbnail">
-                                <a href="post-details.html">
-                                    <img src="assets/images/post-single/stories-04.jpg" alt="Post Images">
-                                </a>
-                            </div>
-                            <div class="post-content">
-                                <div class="post-cat">
-                                    <div class="post-cat-list">
-                                        <a href="#">COLLABORATION</a>
-                                    </div>
-                                </div>
-                                <h5 class="title"><a href="post-details.html">Microsoft and Bridgestone launch real-time
-                                        tire</a></h5>
-                            </div>
-                        </div>
-                        <!-- End Post List  -->
-                    </div>
-                    <!-- Start Stories Post  -->
-                </div>
-            </div>
-        </div>
+      
         <!-- End More Stories Area  -->
 
-        <!-- Start Instagram Area  -->
-        <div class="axil-instagram-area axil-section-gap bg-color-extra03">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title">
-                            <h2 class="title">Instagram</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt--30">
-                    <div class="col-lg-12">
-                        <ul class="instagram-post-list">
-                            <li class="single-post">
-                                <a href="#">
-                                    <img src="assets/images/small-images/instagram-md-01.jpg" alt="Instagram Images">
-                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
-                                </a>
-                            </li>
-                            <li class="single-post">
-                                <a href="#">
-                                    <img src="assets/images/small-images/instagram-md-02.jpg" alt="Instagram Images">
-                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
-                                </a>
-                            </li>
-                            <li class="single-post">
-                                <a href="#">
-                                    <img src="assets/images/small-images/instagram-md-03.jpg" alt="Instagram Images">
-                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
-                                </a>
-                            </li>
-                            <li class="single-post">
-                                <a href="#">
-                                    <img src="assets/images/small-images/instagram-md-04.jpg" alt="Instagram Images">
-                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
-                                </a>
-                            </li>
-                            <li class="single-post">
-                                <a href="#">
-                                    <img src="assets/images/small-images/instagram-md-05.jpg" alt="Instagram Images">
-                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
-                                </a>
-                            </li>
-                            <li class="single-post">
-                                <a href="#">
-                                    <img src="assets/images/small-images/instagram-md-06.jpg" alt="Instagram Images">
-                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+  
         <!-- End Instagram Area  -->
 
         {% endblock %}

@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from .models import Post, Category, PostFeed, Comment, Like, Newsletter
+from .models import Post, Category, PostFeed, Comment, Like, Newsletter, Contact
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import login as auth_log
 from django.contrib.auth import authenticate
@@ -106,17 +106,17 @@ def index(request):
 def sub(request):
 
     print('sub')
+    
     if request.method=="POST":
         email = request.POST['email']
-        newsletter = Newsletter(email=email)
-        newsletter.save()
-        print('sub')
+        if email:
+            newsletter = Newsletter(email=email)
+            newsletter.save()
+            print('sub')
 
-
-        return redirect('/')
-
-    else:
-        return redirect('/')
+            return JsonResponse({'alert':'Saved','data':100})
+        else:
+            return JsonResponse({'alert':"No field must be empty",'data':115})
 
 def detail(request, id):
 
@@ -126,12 +126,17 @@ def detail(request, id):
         post.save()
         comment = Comment.objects.filter(post=post).order_by('-id')
         likes = Like.objects.all().filter(post=post).count()
-        
+        recent = Post.objects.all().order_by('-id')
+        recent = recent[:5]
+        featured = Post.objects.filter(featured=True).order_by('-id')
+        featured = featured[:5]
         context = {
         'post':post,
         #'feed':feed,
         'comment':comment,
         'likes':likes,
+        'recent':recent,
+        'featured':featured
         }
 
 
@@ -144,22 +149,10 @@ def detail(request, id):
             post = Post.objects.get(id=id)
             comment = Comment(opinion=opinion, post=post)
             comment.save()
-            
+            return JsonResponse({'alert':"Comment created Successfully",'data':100})
 
-            post = get_object_or_404(Post, pk=id)
-            comment = Comment.objects.filter(post=post).order_by('-id')
-            
-            
-            context = {
-            'post':post,
-            'feed':feed,
-            'comment':comment,
-            }
-
-            
         else:
-            return render(request, 'detail.html', {"message":'Please enter comment'})
-
+            return JsonResponse({'alert':"Comment not created Successfully",'data':115})
 
 
 
@@ -323,8 +316,25 @@ def about(request):
 
 def contact(request):
 
-    if request.method == 'POST':
+    if request.method =="POST":
+        email = request.POST["email"]
+        message = request.POST["message"]
 
-        return redirect('/')
+        if email and message:
 
-    return render(request, 'contact_us.html')
+            contact = Contact(email=email, message=message)
+            contact.save()
+            
+            alert = "message sent you will hear from us soon !!!"
+
+            context = {
+                'alert':alert
+            }
+            return JsonResponse({'alert':alert,'data':100})
+        else:
+            return JsonResponse({'alert':"No field must be empty",'data':115})
+    else:
+        
+        return render(request, 'contact_us.html')
+
+    

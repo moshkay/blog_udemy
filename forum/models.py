@@ -64,3 +64,10 @@ class Newsletter(models.Model):
 
     def __str__(self):
         return self.email
+
+class Contact(models.Model):
+    email = models.EmailField(null=True,blank=True)
+    message = models.TextField(max_length=500,null=True,blank=True)
+    email_sent = models.CharField(max_length=10,default='no')
+    date_created = models.DateTimeField(auto_now=True)
+

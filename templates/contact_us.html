@@ -838,24 +838,25 @@
                             <div class="axil-section-gapTop axil-contact-form-area">
                                 <h4 class="title mb--10">Send Us a Message</h4>
                                 <p class="b3 mb--30">Your email address will not be published. All the fields are required.</p>
-                                <form>{% csrf_token %}
+                                <form>
+                                    {% csrf_token %}
                                    
                                     
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="form-group">
                                             <label>Your Email</label>
-                                            <input for="email" name="contact-email"type="email">
+                                            <input name="email" type="email" id="email">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="contact-message">Your Message</label>
-                                            <textarea name="message" ></textarea>
+                                            <textarea name="message" id="message"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-submit">
-                                            <button id="contact_submit" class="axil-button button-rounded btn-primary">Login</button>
+                                            <button id="contact_submit" class="axil-button button-rounded btn-primary ladda-button" data-style="slide-up">Login</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1018,6 +1019,10 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            var CSRFTOKEN = "{{csrf_token}}"
+          </script>
         <!-- End Post List Wrapper  -->
         <!-- Start Instagram Area  -->
         <div class="axil-instagram-area axil-section-gap bg-color-grey">
