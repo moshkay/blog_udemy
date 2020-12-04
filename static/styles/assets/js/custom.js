@@ -2,30 +2,28 @@ $(document).ready(function(){
 
     
     $('#like_button').on('click',function(){
-       
-        $.post('/like_post',
+        // var l = Ladda.create(document.querySelector('#like_button'));
+        // l.start();
+        $.post('/like',
             {
                 post_id: $('#post_id').val(),
                 csrfmiddlewaretoken:CSRFTOKEN
             }
         )
         .done(function(data){
-            
             if (data.data == 100){
-                
                 $('#like_count').html(data.like);
+
                 $("#like").addClass("text-danger");
                 $("#like").removeClass("text-primary");
             }else{
-
                 console.log('an error occured');
             }
-
         })
         .fail(function(){
 
         })
-    })
+    });
 
     $('#contact_submit').on('click',function(){
         var l = Ladda.create(document.querySelector('#contact_submit'));
@@ -47,7 +45,7 @@ $(document).ready(function(){
                 swal('success',data.alert,'success')
             
                 $('#email').val('');
-                $('#message').val('')
+                $('#message').val('');
                 
                 l.stop();
                 window.location.reload();
@@ -102,20 +100,14 @@ $(document).ready(function(){
     $('#comment_submit').on('click',function(){
         var l = Ladda.create(document.querySelector('#comment_submit'));
         l.start();
-        
-
         $.post('/detail/'+$("#post_id").val()+"/",
-
-       
             {
-                
                 opinion:$('#opinion').val(),
-      
                 csrfmiddlewaretoken:CSRFTOKEN
             }
         )
         .done(function(data){
-            
+
             if (data.data == 100){
                 swal('success',data.alert,'success')
                 alert('success')

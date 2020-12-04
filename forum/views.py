@@ -138,13 +138,10 @@ def detail(request, id):
         'recent':recent,
         'featured':featured
         }
-
-
         return render(request, 'post-details.html', context)
 
     else:
         opinion = request.POST["opinion"]
-        
         if opinion:
             post = Post.objects.get(id=id)
             comment = Comment(opinion=opinion, post=post)
@@ -155,23 +152,44 @@ def detail(request, id):
             return JsonResponse({'alert':"Comment not created Successfully",'data':115})
 
 
-
 def like(request):
-    user_id = request.user.id
-    user = get_object_or_404(User, id=user_id)
-    post_id = request.POST['post_id']
-    post = get_object_or_404(Post, id=post_id)
-    like = Like.objects.filter(user_id = user,post=post).count()
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        user = get_object_or_404(User, id=user_id)
+        post_id = request.POST['post_id']
+        post = get_object_or_404(Post, id=post_id)
+        like = Like.objects.filter(user_id=user, post=post).count()
 
-    if like < 1:
-        post.likes = post.likes + 1
-        post.save()
+        if like < 1:
+            post.likes = post.likes + 1
+            post.save()
 
-        like = Like.objects.create(post=post,likes=post.likes,user_id=user)
+            like = Like.objects.create(post=post, likes=post.likes, user_id=user)
 
-        return render(request, 'detail.html', {"like":like.likes})
+        return JsonResponse({'like': post.likes, 'data': 100})
     else:
-        return render(request, 'detail.html')
+        post_id = request.POST['post_id']
+        post = get_object_or_404(Post, id=post_id)
+        return JsonResponse({'like': post.likes, 'data': 112})
+
+
+# def like(request):
+#
+#     user_id = request.user.id
+#     user = get_object_or_404(User, id=user_id)
+#     post_id = request.POST['post_id']
+#     post = get_object_or_404(Post, id=post_id)
+#     like = Like.objects.filter(user_id = user,post=post).count()
+#
+#     if like < 1:
+#         post.likes = post.likes + 1
+#         post.save()
+#
+#         like = Like.objects.create(post=post,likes=post.likes,user_id=user)
+#
+#         return render(request, 'detail.html', {"like":like.likes})
+#     else:
+#         return render(request, 'detail.html')
         
 
 

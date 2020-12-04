@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load social_share %}
 {% load static %}
         <!-- End Mobile Menu Area  -->
 
@@ -102,13 +102,16 @@
                             <div class="social-share-block">
                                 <div class="post-like">
                                     
-                                    <a href="#"><i class="fal fa-thumbs-up"></i><span>{{likes}} Like</span></a>
+                                    <button class="ladda-button btn btn-primary" id="like_button" data-style="slide-up"><i class="fal fa-thumbs-up"></i><span id="like_count">{{likes}}</span> Like</button>
                                 </div>
                                 <ul class="social-icon icon-rounded-transparent md-size">
-                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+{#                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>#}
+{#                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>#}
+{#                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>#}
+{#                                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>#}
+                                    <li> {% post_to_facebook request.path '<button  ><span class="fab fa-facebook-f"></span></button>' %}</li>
+                                    <li>{% post_to_twitter post.title request.path '<button><span class="fab fa-twitter"></span></button>' %}</li>
+                                    <li>{% post_to_linkedin '<button><span class="fab fa-twitter"></span></button>'%}</li>
                                 </ul>
                             </div>
 
@@ -125,7 +128,7 @@
                                     
                                     {% else %}
                                     <div class="add-comment-button cerchio">
-                                        <a class="axil-button button-rounded" href="post-details.html" tabindex="0"><span> Login To Add Your Comment</span></a>
+                                        <a class="axil-button button-rounded" href="/login" tabindex="0"><span> Login To Add Your Comment</span></a>
                                     </div>
                                     {% endif %}
                                 </div>
